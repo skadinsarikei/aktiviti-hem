@@ -1869,7 +1869,7 @@
                 </div>
                 <div class="print-section">
                     <div class="print-section-title">Butiran Aktiviti</div>
-                    <div class="print-value" style="line-height:1.8;">${report.butiran}</div>
+                    <div class="print-value" style="line-height:1.8; white-space: pre-wrap;">${formatButiran(report.butiran)}</div>
                 </div>
                 ${imageUrl ? `
                 <div class="print-section">
@@ -2060,7 +2060,7 @@
                          onerror="this.closest('.galeri-tile').querySelector('.galeri-tile-overlay').style.background='none'">
                     <div class="galeri-tile-overlay">
                         <div class="galeri-tile-date">📅 ${report.hari}, ${report.tarikh} &nbsp;·&nbsp; ${report.masa}</div>
-                        <div class="galeri-tile-caption">${report.butiran || ''}</div>
+                        <div class="galeri-tile-caption">${formatButiran(report.butiran)}</div>
                     </div>
                 `;
             } else {
@@ -2075,7 +2075,7 @@
                     </div>
                     <div class="galeri-tile-overlay" style="background:linear-gradient(to top,rgba(15,23,42,0.75),transparent)">
                         <div class="galeri-tile-date">📅 ${report.hari}, ${report.tarikh} &nbsp;·&nbsp; ${report.masa}</div>
-                        <div class="galeri-tile-caption">${report.butiran || ''}</div>
+                        <div class="galeri-tile-caption">${formatButiran(report.butiran)}</div>
                     </div>
                 `;
             }
@@ -2449,7 +2449,14 @@ ${imgBlock}
                 hideLoading();
             }
         }
-
+        // ✅ FIX 2: Tukar \n kepada <br> dan escape HTML untuk paparan butiran
+        function formatButiran(text) {
+            return (text || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+        }
         function displayReports(reports) {
             const reportsList = document.querySelector('.reports-list');
             reportsList.innerHTML = '';
@@ -2511,7 +2518,7 @@ ${imgBlock}
                 </div>
                 <div class="report-content">
                     <h3>Aktiviti HEM:</h3>
-                    <p>${report.butiran}</p>
+                    <p style="white-space: pre-wrap;">${formatButiran(report.butiran)}</p>
                 </div>
                 <div class="report-images">
                     <div class="report-image">
